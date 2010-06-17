@@ -1,20 +1,21 @@
 #!/opt/local/bin/ruby -w
 # git clone http://github.com/jjl/get_iplayer.git ~/Workspace/bin/get_iplayer/get_iplayer
 # curl http://ftp.twaren.net/Unix/NonGNU/flvstreamer/macosx/flvstreamer_macosx_intel_32bit_latest --output ~/Workspace/bin/flvstreamer
+# chmod 755 ~/Workspace/bin/flvstreamer
 
 GET_IPLAYER = "~/Workspace/bin/get_iplayer/get_iplayer"
 IPLAYER_CACHE = "~/.get_iplayer/radio.cache"
-FLVSTREAMER = "~/Workspace/bin/flvstreamer/flvstreamer"
+FLVSTREAMER = "~/Workspace/bin/flvstreamer"
 DOWNLOAD_PATH = "~/Music/BBC"
 
 puts ""
-puts "*********** manually refresh the list"
+puts "*********** to refresh the list"
 puts "#{GET_IPLAYER} --refresh --type=radio"
 puts ""
-puts "manually find a program pid"
+puts "to find a program pid"
 puts "cat ~/.get_iplayer/radio.cache | grep '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'"
 puts ""
-puts "manually download the program"
+puts "to download the program"
 puts "#{GET_IPLAYER} --type=radio --amode=flashaac --pid [PID] --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}"
 
 puts ""
