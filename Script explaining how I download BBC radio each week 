@@ -7,28 +7,50 @@ GET_IPLAYER = "~/Workspace/bin/get_iplayer/get_iplayer"
 IPLAYER_CACHE = "~/.get_iplayer/radio.cache"
 FLVSTREAMER = "~/Workspace/bin/flvstreamer"
 DOWNLOAD_PATH = "~/Music/BBC"
+SHOWS = ["Pete Tong", "Annie Mac", "Judge Jules", "BBC Radio 1's Essential Mix", "Friday Floor Fillers", "Dave Pearce Dance Anthems"]
 
-puts ""
-puts "*********** to refresh the list"
-puts "#{GET_IPLAYER} --refresh --type=radio"
-puts ""
-puts "to find a program pid"
-puts "cat ~/.get_iplayer/radio.cache | grep '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'"
-puts ""
-puts "to download the program"
-puts "#{GET_IPLAYER} --type=radio --amode=flashaac --pid [PID] --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}"
-
-puts ""
-puts "refreshing radio programs"
-`#{GET_IPLAYER} --refresh --type=radio`
-
-["Pete Tong", "Annie Mac", "Judge Jules", "BBC Radio 1's Essential Mix", "Friday Floor Fillers", "Dave Pearce Dance Anthems"].each do |name|
-  show = `cat #{IPLAYER_CACHE} | grep "#{name}"`
-
-  parts = show.split('|')
-  # puts [parts[0], parts[2], parts[3], parts[5], parts[10]].join(', ')
-  puts "echo '#{parts[5]} - #{parts[2]}'"
-
-  `cd #{DOWNLOAD_PATH} && #{GET_IPLAYER} --type=radio --amode=flashaac --get #{parts[0]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+USAGE = <<END_OF_USAGE
   
-end  
+  Usage: #{__FILE__} [refresh|download|find|get] (find needs the name) (get needs the PIP)"
+  
+  *********** MANUAL REFRESH
+  #{GET_IPLAYER} --refresh --type=radio
+  
+  *********** MANUAL FIND
+  cat ~/.get_iplayer/radio.cache | grep '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'
+  
+  *********** MANUAL GET
+  #{GET_IPLAYER} --type=radio --amode=flashaac --pid [PID] --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}
+END_OF_USAGE
+
+if ARGV.length == 0
+  puts USAGE
+end
+
+if ARGV[0] == "refresh"
+  puts "*********** REFRESH (can take some time)"
+  `#{GET_IPLAYER} --refresh --type=radio`
+
+elsif ARGV[0] == "download"
+  puts "*********** download #{SHOWS.join(', ')}"
+  
+  SHOWS.each do |name|
+    show = `cat #{IPLAYER_CACHE} | grep "#{name}"`
+
+    parts = show.split('|')
+    # puts [parts[0], parts[2], parts[3], parts[5], parts[10]].join(', ')
+    puts "echo '#{parts[5]} - #{parts[2]}'"
+
+    `cd #{DOWNLOAD_PATH} && #{GET_IPLAYER} --type=radio --amode=flashaac --get #{parts[0]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+  end  
+
+elsif ARGV[0] == "find" && ARGV.length > 1
+  puts "*********** find #{ARGV[1]}"
+  puts `cat ~/.get_iplayer/radio.cache | grep '#{ARGV[1]}' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'`
+
+elsif ARGV[0] == "get" && ARGV.length > 1
+  puts "*********** get #{ARGV[1]}"
+  `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+else
+  puts USAGE
+end
