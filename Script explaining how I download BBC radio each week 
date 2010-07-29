@@ -9,7 +9,7 @@ IPLAYER_HISTORY = "~/.get_iplayer/download_history"
 FLVSTREAMER = "~/Workspace/bin/flvstreamer"
 DOWNLOAD_PATH = "~/Music/BBC"
 
-SHOWS = ["Pete Tong", "Annie Mac", "Judge Jules", "BBC Radio 1's Essential Mix", "Friday Floor Fillers", "Dave Pearce Dance Anthems"]
+SHOWS = ["Pete Tong", "Annie Mac", "Judge Jules", "BBC Radio 1's Essential Mix", "Friday Floor Fillers", "Dave Pearce Dance Anthems", "6 Mix"]
 
 USAGE = <<END_OF_USAGE
   
@@ -19,7 +19,7 @@ USAGE = <<END_OF_USAGE
   #{GET_IPLAYER} --refresh --type=radio
   
   *********** MANUAL FIND
-  cat ~/.get_iplayer/radio.cache | grep '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'
+  cat ~/.get_iplayer/radio.cache | grep -i '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'
   
   *********** MANUAL GET
   #{GET_IPLAYER} --type=radio --amode=flashaac --pid [PID] --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}
@@ -41,7 +41,7 @@ elsif ARGV[0] == "download"
   puts "*********** download"
   
   SHOWS.each do |name|
-    shows = `cat #{IPLAYER_CACHE} | grep "#{name}"`
+    shows = `cat #{IPLAYER_CACHE} | grep -i "#{name}"`
     unless shows.empty?
       shows.split("\n").each do |show|
         puts "#{'*'*80}"
@@ -50,7 +50,13 @@ elsif ARGV[0] == "download"
         downloaded = `cat #{IPLAYER_HISTORY} | grep "#{parts[3]}"`  
         if downloaded.empty?
           puts "Download   #{parts[3]} - #{parts[2]} - #{parts[10]}"
-          `cd #{DOWNLOAD_PATH} && #{GET_IPLAYER} --type=radio --amode=flashaac --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+          if parts[3] =~/^p/
+            `#{GET_IPLAYER} --type=radio --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+          else
+            `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+          end  
+          
+          # `cd #{DOWNLOAD_PATH} && #{GET_IPLAYER} --type=radio --amode=flashaac --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
         else
           puts "Downloaded #{parts[3]} - #{parts[2]} - #{parts[10]}"
         end  
@@ -62,7 +68,7 @@ elsif ARGV[0] == "find" && ARGV.length > 1
   puts "#{'*'*80}"
   puts "*********** find #{ARGV[1]}"
   
-  shows = `cat #{IPLAYER_CACHE} | grep "#{ARGV[1]}"`  
+  shows = `cat #{IPLAYER_CACHE} | grep -i "#{ARGV[1]}"`  
   unless shows.empty?
     shows.split("\n").each do |show|
       parts = show.split('|')
@@ -83,7 +89,11 @@ elsif ARGV[0] == "get" && ARGV.length > 1
   downloaded = `cat #{IPLAYER_HISTORY} | grep "#{ARGV[1]}"`  
   if downloaded.empty?
     puts "Downloading #{ARGV[1]}"
-    `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+    if ARGV[1] =~/^p/
+      `#{GET_IPLAYER} --type=radio --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+    else
+      `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+    end  
   else
     puts "Downloaded  #{ARGV[1]}"
   end  
