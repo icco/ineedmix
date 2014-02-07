@@ -38,7 +38,7 @@ if ARGV[0] == "refresh"
   puts "#{'*'*80}"
   puts "*********** REFRESH (can take some time)"
   
-  `#{GET_IPLAYER} --refresh --type=radio`
+  Kernel.system "#{GET_IPLAYER} --refresh --type=radio"
 
 elsif ARGV[0] == "download"
   puts "#{'*'*80}"
