@@ -7,3 +7,7 @@ A simple tool to run nightly to mirror essential mix.
 ```
 
 Based off of the work by @dougochris at https://gist.github.com/dougochris/441636.
+
+## Dependencies
+
+ * `sudo aptitude install rtmpdump`

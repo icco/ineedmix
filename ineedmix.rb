@@ -9,7 +9,6 @@ IPLAYER_HISTORY = "~/.get_iplayer/download_history"
 DOWNLOAD_PATH = "~/Projects/snowball/public/misc/"
 
 FileUtils.mkdir_p(File.dirname(File.expand_path(IPLAYER_CACHE)))
-FileUtils.touch(File.expand_path(IPLAYER_CACHE))
 FileUtils.mkdir_p(File.dirname(File.expand_path(IPLAYER_HISTORY)))
 FileUtils.touch(File.expand_path(IPLAYER_HISTORY))
 FileUtils.mkdir_p(File.dirname(File.expand_path(DOWNLOAD_PATH)))
