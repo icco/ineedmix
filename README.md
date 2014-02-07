@@ -10,4 +10,4 @@ Based off of the work by @dougochris at https://gist.github.com/dougochris/44163
 
 ## Dependencies
 
- * `sudo aptitude install rtmpdump`
+ * `sudo aptitude install rtmpdump ffmpeg`
