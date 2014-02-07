@@ -1,15 +1,12 @@
-#!/opt/local/bin/ruby -w
-# git clone http://github.com/jjl/get_iplayer.git ~/Workspace/bin/get_iplayer/get_iplayer
-# curl http://ftp.twaren.net/Unix/NonGNU/flvstreamer/macosx/flvstreamer_macosx_intel_32bit_latest --output ~/Workspace/bin/flvstreamer
-# chmod 755 ~/Workspace/bin/flvstreamer
+#! /usr/bin/env ruby
 
-GET_IPLAYER = "~/Workspace/bin/get_iplayer/get_iplayer"
+# https://github.com/dinkypumpkin/get_iplayer
+GET_IPLAYER = "~/Projects/get_iplayer/get_iplayer"
 IPLAYER_CACHE = "~/.get_iplayer/radio.cache"
 IPLAYER_HISTORY = "~/.get_iplayer/download_history"
-FLVSTREAMER = "~/Workspace/bin/flvstreamer"
-DOWNLOAD_PATH = "~/Music/BBC"
+DOWNLOAD_PATH = "~/Projects/snowball/public/misc/"
 
-SHOWS = ["Pete Tong", "Annie Mac", "Judge Jules", "BBC Radio 1's Essential Mix", "Friday Floor Fillers", "Dave Pearce Dance Anthems", "6 Mix"]
+SHOWS = ["Pete Tong", "Annie Mac", "BBC Radio 1's Essential Mix"]
 
 USAGE = <<END_OF_USAGE
   
@@ -22,7 +19,7 @@ USAGE = <<END_OF_USAGE
   cat ~/.get_iplayer/radio.cache | grep -i '[SHOW NAME]' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'
   
   *********** MANUAL GET
-  #{GET_IPLAYER} --type=radio --amode=flashaac --pid [PID] --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}
+  #{GET_IPLAYER} --type=radio --pid [PID] --output #{DOWNLOAD_PATH}
 END_OF_USAGE
 
 if ARGV.length == 0
@@ -51,12 +48,10 @@ elsif ARGV[0] == "download"
         if downloaded.empty?
           puts "Download   #{parts[3]} - #{parts[2]} - #{parts[10]}"
           if parts[3] =~/^p/
-            `#{GET_IPLAYER} --type=radio --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+            `#{GET_IPLAYER} --type=radio --pid #{parts[3]} --output #{DOWNLOAD_PATH}`
           else
-            `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+            `#{GET_IPLAYER} --type=radio --pid #{parts[3]} --output #{DOWNLOAD_PATH}`
           end  
-          
-          # `cd #{DOWNLOAD_PATH} && #{GET_IPLAYER} --type=radio --amode=flashaac --pid #{parts[3]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
         else
           puts "Downloaded #{parts[3]} - #{parts[2]} - #{parts[10]}"
         end  
@@ -90,9 +85,9 @@ elsif ARGV[0] == "get" && ARGV.length > 1
   if downloaded.empty?
     puts "Downloading #{ARGV[1]}"
     if ARGV[1] =~/^p/
-      `#{GET_IPLAYER} --type=radio --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+      `#{GET_IPLAYER} --type=radio --pid #{ARGV[1]} --output #{DOWNLOAD_PATH}`
     else
-      `#{GET_IPLAYER} --type=radio --amode=flashaac --pid #{ARGV[1]} --flvstreamer #{FLVSTREAMER}  --output #{DOWNLOAD_PATH}`
+      `#{GET_IPLAYER} --type=radio --pid #{ARGV[1]} --output #{DOWNLOAD_PATH}`
     end  
   else
     puts "Downloaded  #{ARGV[1]}"
