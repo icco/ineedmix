@@ -10,4 +10,5 @@ Based off of the work by @dougochris at https://gist.github.com/dougochris/44163
 
 ## Dependencies
 
- * `sudo aptitude install rtmpdump ffmpeg`
+ * Debian: `sudo aptitude install ffmpeg mplayer libmp3-tag-perl libnet-smtp-ssl-perl libauthen-sasl-perl`
+ * Other: https://github.com/dinkypumpkin/get_iplayer/wiki/installation
