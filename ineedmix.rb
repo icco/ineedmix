@@ -39,7 +39,6 @@ if ARGV[0] == "refresh"
   puts "*********** REFRESH (can take some time)"
   
   Kernel.system "#{GET_IPLAYER} --refresh --type=radio"
-
 elsif ARGV[0] == "download"
   puts "#{'*'*80}"
   puts "*********** download"
@@ -63,37 +62,6 @@ elsif ARGV[0] == "download"
       end  
     end  
   end  
-
-elsif ARGV[0] == "find" && ARGV.length > 1
-  puts "#{'*'*80}"
-  puts "*********** find #{ARGV[1]}"
-  
-  shows = `cat #{IPLAYER_CACHE} | grep -i "#{ARGV[1]}"`  
-  unless shows.empty?
-    shows.split("\n").each do |show|
-      parts = show.split('|')
-      downloaded = `cat #{IPLAYER_HISTORY} | grep "#{parts[3]}"`  
-      if downloaded.empty?
-        puts "Download   #{parts[3]} - #{parts[2]} - #{parts[10]}"
-      else
-        puts "Downloaded #{parts[3]} - #{parts[2]} - #{parts[10]}"
-      end  
-    end  
-  end  
-  # puts `cat ~/.get_iplayer/radio.cache | grep '#{ARGV[1]}' | awk 'BEGIN {FS=\"|\"}{ print $4, \" \",  $3, \" \", $11 }'`
-
-elsif ARGV[0] == "get" && ARGV.length > 1
-  puts "#{'*'*80}"
-  puts "*********** get #{ARGV[1]}"
-  
-  downloaded = `cat #{IPLAYER_HISTORY} | grep "#{ARGV[1]}"`  
-  if downloaded.empty?
-    puts "Downloading #{ARGV[1]}"
-    `#{GET_IPLAYER} --type=radio --pid #{ARGV[1]} --output #{DOWNLOAD_PATH}`
-  else
-    puts "Downloaded  #{ARGV[1]}"
-  end  
-  
 else
   puts USAGE
 end
