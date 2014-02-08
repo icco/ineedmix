@@ -24,4 +24,10 @@ First install the deps for your OS.
 
 Just `git clone https://github.com/icco/ineedmix` and `https://github.com/dinkypumpkin/get_iplayer`. Then `cd ineedmix`.
 
-Finally `./ineedmix.rb -i ../get_iplayer/get_iplayer -a refresh; ./ineedmix.rb -i ../get_iplayer/get_iplayer -d /tmp/ -a download` and watch this weeks music appear in your `/tmp` directory.
+Finally run:
+
+```
+./ineedmix.rb -i ../get_iplayer/get_iplayer -a refresh; ./ineedmix.rb -i ../get_iplayer/get_iplayer -d /tmp/ -a download
+```
+
+and watch this weeks music appear in your `/tmp` directory.
