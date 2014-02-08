@@ -4,7 +4,6 @@ require 'fileutils'
 require 'optparse'
 
 # https://github.com/dinkypumpkin/get_iplayer
-GET_IPLAYER = "~/Projects/get_iplayer/get_iplayer"
 IPLAYER_CACHE = "~/.get_iplayer/radio.cache"
 IPLAYER_HISTORY = "~/.get_iplayer/download_history"
 
@@ -16,6 +15,7 @@ options = {
   :action => nil,
   :directory => "~/Projects/snowball/public/misc/",
   :shows => ["Pete Tong", "Annie Mac", "BBC Radio 1's Essential Mix"],
+  :iplayer => "~/Projects/get_iplayer/get_iplayer",
 }
 
 OptionParser.new do |opts|
@@ -27,6 +27,10 @@ OptionParser.new do |opts|
 
   opts.on("-d", "--directory [DOWNLOAD_PATH]", "Directory to Download to.") do |d|
     options[:directory] = d
+  end
+
+  opts.on("-i", "--get_iplayer [bin_path]", "get_iplayer binary location.") do |d|
+    options[:iplayer] = d
   end
 
   opts.on("-s", "--shows x,y,z", Array, "List of shows to try and download.") do |list|
@@ -44,6 +48,7 @@ class INeedMix
     @shows = options[:shows]
     @directory = options[:directory]
     @action = options[:action]
+    @get_iplayer = options[:iplayer]
 
     FileUtils.mkdir_p(File.dirname(File.expand_path(@directory)))
   end
@@ -61,7 +66,7 @@ class INeedMix
 
   def refresh
     puts "*********** REFRESHING (can take some time)"
-    Kernel.system "#{GET_IPLAYER} --refresh --type=radio"
+    Kernel.system "#{@get_iplayer} --refresh --type=radio"
   end
 
   def download
@@ -77,7 +82,7 @@ class INeedMix
           downloaded = `cat #{IPLAYER_HISTORY} | grep "#{parts[3]}"`
           if downloaded.empty?
             puts "Download   #{parts[3]} - #{parts[2]} - #{parts[10]}"
-            cmd = "#{GET_IPLAYER} --modes=best --aactomp3 --type=radio --pid #{parts[3]} --output #{@directory}"
+            cmd = "#{@get_iplayer} --modes=best --aactomp3 --type=radio --pid #{parts[3]} --output #{@directory}"
             puts cmd
             p Kernel.system cmd
           else
