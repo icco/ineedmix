@@ -39,6 +39,8 @@ OptionParser.new do |opts|
   end
 end.parse!
 
+raise OptionParser::MissingArgument if options[:action].nil?
+
 class INeedMix
   def initialize options
     @shows = options[:shows]
@@ -88,3 +90,7 @@ class INeedMix
     end
   end
 end
+
+worker = INeedMix.new options
+worker.do_work
+exit
