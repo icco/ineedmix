@@ -60,13 +60,12 @@ class INeedMix
   end
 
   def refresh
-    puts "*********** REFRESH (can take some time)"
+    puts "*********** REFRESHING (can take some time)"
     Kernel.system "#{GET_IPLAYER} --refresh --type=radio"
   end
 
   def download
-    puts "#{'*'*80}"
-    puts "*********** download"
+    puts "*********** DOWNLOADING"
 
     @shows.each do |name|
       shows = `cat #{IPLAYER_CACHE} | grep -i "#{name}"`
