@@ -4,11 +4,11 @@ require 'fileutils'
 require 'optparse'
 
 # https://github.com/dinkypumpkin/get_iplayer
-IPLAYER_CACHE = "~/.get_iplayer/radio.cache"
-IPLAYER_HISTORY = "~/.get_iplayer/download_history"
+IPLAYER_DIR = File.expand_path("~/.get_iplayer")
+IPLAYER_CACHE = "#{IPLAYER_DIR}/radio.cache"
+IPLAYER_HISTORY = "#{IPLAYER_DIR}/download_history"
 
-FileUtils.mkdir_p(File.dirname(File.expand_path(IPLAYER_CACHE)))
-FileUtils.mkdir_p(File.dirname(File.expand_path(IPLAYER_HISTORY)))
+FileUtils.mkdir_p(IPLAYER_DIR)
 FileUtils.touch(File.expand_path(IPLAYER_HISTORY))
 
 options = {
@@ -83,10 +83,10 @@ class INeedMix
           parts = show.split('|')
           downloaded = `cat #{IPLAYER_HISTORY} | grep "#{parts[3]}"`
           if downloaded.empty?
-            puts "Download   #{parts[3]} - #{parts[2]} - #{parts[10]}"
+            puts "Downloading: #{parts[3]} - #{parts[2]} - #{parts[10]}"
             cmd = "#{@get_iplayer} --modes=best --aactomp3 --type=radio --pid #{parts[3]} --output #{@directory}"
             puts cmd
-            p Kernel.system cmd
+            Kernel.system cmd
           else
             puts "Downloaded #{parts[3]} - #{parts[2]} - #{parts[10]}"
           end
