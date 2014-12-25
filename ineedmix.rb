@@ -14,7 +14,7 @@ FileUtils.touch(File.expand_path(IPLAYER_HISTORY))
 options = {
   :action => nil,
   :directory => "~/Projects/snowball/public/misc/",
-  :shows => ["Pete Tong", "Annie Mac", "BBC Radio 1's Essential Mix"],
+  :shows => ["Pete Tong", "Annie Mac", "BBC Radio 1's Essential Mix", "Residency"],
   :iplayer => "~/Projects/get_iplayer/get_iplayer",
 }
 
