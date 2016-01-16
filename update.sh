@@ -10,6 +10,8 @@ fi
 source $RUBY
 
 git pull
+bundle update
+git ci Gemfile* -m 'bundle update'
 git push
 
 ./ineedmix.rb -i ../get_iplayer/get_iplayer -a refresh
