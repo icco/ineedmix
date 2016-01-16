@@ -13,7 +13,7 @@ FileUtils.touch(File.expand_path(IPLAYER_HISTORY))
 
 options = {
   :action => nil,
-  :directory => "/Volumes/Data/Clouds/Dropbox/Music/Mixes/Unsorted",
+  :directory => "/tmp/",
   :shows => ["Pete Tong", "Annie Mac", "BBC Radio 1's Essential Mix", "Residency"],
   :iplayer => "~/Projects/get_iplayer/get_iplayer",
 }
@@ -98,4 +98,5 @@ end
 
 worker = INeedMix.new options
 worker.do_work
+
 exit

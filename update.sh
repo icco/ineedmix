@@ -12,4 +12,5 @@ source $RUBY
 git pull
 git push
 
-./ineedmix.rb -i ../get_iplayer/get_iplayer -a refresh; ./ineedmix.rb -i ../get_iplayer/get_iplayer -d /tmp/ -a download
+./ineedmix.rb -i ../get_iplayer/get_iplayer -a refresh
+./ineedmix.rb -i ../get_iplayer/get_iplayer -d /Volumes/Data/Clouds/Dropbox/Music/Mixes/Unsorted -a download
