@@ -1,5 +1,7 @@
-
+tap 'dinkypumpkin/get_iplayer'
 brew 'rtmpdump'
 brew 'ffmpeg'
 brew 'atomicparsley'
 brew 'id3v2'
+brew 'mplayer'
+brew 'get_iplayer'
